@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f6f7fb" />
+  <title>Timekeeper · Time Calculator</title>
+  <style>
+    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172033;background:#f6f7fb;font-synthesis:none}
+    *{box-sizing:border-box}body{margin:0;min-height:100dvh}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #a5b4fc;outline-offset:3px}
+    .shell{width:min(100% - 32px,680px);margin:0 auto;padding:34px 0 64px}.topline{display:flex;align-items:center;gap:12px;margin-bottom:32px}.mark{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:#4f46e5;color:white;font-size:23px;font-weight:700}.brand{font-weight:800;letter-spacing:-.6px;font-size:21px}.muted{color:#70798c}.eyebrow{font-size:12px;text-transform:uppercase;font-weight:800;letter-spacing:1.2px;color:#7066d9;margin:0 0 8px}h1{font-size:clamp(27px,6vw,38px);letter-spacing:-1.3px;line-height:1.15;margin:0 0 9px}p{line-height:1.55}.intro{margin:0 0 25px;color:#70798c;font-size:14px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:26px 0 16px}.toolbar h2{font-size:17px;margin:0}.primary{border:0;border-radius:13px;background:#4f46e5;color:white;font-weight:700;padding:13px 18px;box-shadow:0 4px 12px #4f46e522}.primary:hover{background:#4338ca}.secondary{background:white;border:1px solid #e0e3ed;color:#4b5567;padding:11px 14px;border-radius:12px;font-weight:650}.secondary:hover{background:#f4f5fa}.card{background:white;border:1px solid #e8eaf1;border-radius:19px;box-shadow:0 7px 26px #19234a08}.history{display:grid;gap:12px}.history-item{display:flex;align-items:center;gap:10px;padding:16px}.history-link{display:flex;flex:1;min-width:0;align-items:center;justify-content:space-between;gap:12px;text-decoration:none;color:inherit}.history-title{font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.history-meta{font-size:12px;color:#82899a;margin-top:5px}.history-total{font-weight:800;color:#4f46e5;white-space:nowrap;font-size:16px}.delete{border:0;background:#f5f6fa;border-radius:10px;color:#9ca3b5;width:35px;height:35px;flex:none;font-size:20px}.delete:hover{background:#fee2e2;color:#dc2626}.empty{padding:42px 24px;text-align:center}.empty-icon{font-size:36px;margin-bottom:12px}.empty h2{font-size:19px;margin:0 0 6px}.empty p{font-size:14px;color:#7b8496;margin:0 0 20px}.back{display:inline-flex;align-items:center;gap:8px;border:0;background:transparent;padding:0;color:#5c6476;font-weight:700;margin:0 0 25px}.editor{padding:22px}.label{display:block;font-size:13px;font-weight:750;margin-bottom:9px}.title-input{width:100%;padding:14px 15px;border:1px solid #dfe3ed;border-radius:12px;outline:none;background:#fff;color:#172033}.title-input:focus,.time-row input:focus{border-color:#818cf8;box-shadow:0 0 0 3px #e0e7ff}.divider{height:1px;background:#eef0f5;margin:23px 0}.row-head,.time-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 36px;gap:10px;align-items:center}.row-head{color:#7c8495;font-size:12px;font-weight:750;margin-bottom:9px}.time-row{margin-bottom:10px}.time-row input{width:100%;min-width:0;border:1px solid #dfe3ed;border-radius:12px;padding:14px 12px;color:#172033;outline:none;background:#fff}.remove{width:36px;height:42px;border:0;border-radius:10px;background:#f5f6fa;color:#8992a4;font-size:21px}.remove:disabled{opacity:.3;cursor:default}.total-box{background:#eeedff;border:1px solid #e0ddff;border-radius:16px;padding:22px;margin-top:20px;display:flex;justify-content:space-between;align-items:center;gap:12px}.total-label{font-size:13px;font-weight:750;color:#65629b}.total-value{font-size:clamp(29px,7vw,42px);font-weight:850;color:#4338ca;letter-spacing:-1px;font-variant-numeric:tabular-nums}.editor-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:19px}.saved{font-size:12px;color:#7c8495}.hint{font-size:12px;color:#8a91a0;margin:14px 0 0}.hidden{display:none!important}@media(max-width:480px){.shell{width:min(100% - 24px,680px);padding-top:22px}.topline{margin-bottom:27px}.editor{padding:17px}.history-item{padding:13px}.history-total{font-size:14px}.primary{padding:12px 14px}.toolbar{align-items:center}.total-box{padding:18px}.editor-actions{flex-wrap:wrap}.time-row input{padding:13px 10px}}
+  </style>
+  <script src="./script.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="topline"><div class="mark">◷</div><div class="brand">timekeeper<span style="color:#4f46e5">.</span></div></header>
+    <section id="home" class="hidden" aria-label="Saved calculations">
+      <p class="eyebrow">Your workspace</p><h1>Time calculations</h1><p class="intro">All your calculations, saved automatically on this device.</p>
+      <div class="toolbar"><h2>Recent calculations</h2><button class="primary" id="new-home">+ Calculate</button></div>
+      <div id="history" class="history"></div>
+    </section>
+    <section id="detail" class="hidden" aria-label="Time calculator">
+      <button class="back" id="back">← All calculations</button>
+      <p class="eyebrow">Time calculator</p><h1>Add up your time</h1><p class="intro">Enter hours and minutes. A new row appears automatically.</p>
+      <div class="card editor">
+        <label class="label" for="title">Calculation title <span class="muted" style="font-weight:400">(optional)</span></label>
+        <input class="title-input" id="title" maxlength="120" placeholder="e.g. Weekly work hours" autocomplete="off" />
+        <div class="divider"></div>
+        <div class="row-head"><span>Hours (h)</span><span>Minutes (m)</span><span></span></div>
+        <div id="rows"></div>
+        <p class="hint">Minutes over 60 are converted into hours.</p>
+        <div class="total-box"><div class="total-label">Total time</div><output class="total-value" id="total" aria-live="polite">0:00</output></div>
+        <div class="editor-actions"><span class="saved" id="saved">Saved automatically</span><button class="secondary" id="clear">Clear entries</button></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
