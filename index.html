@@ -1,39 +1,709 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#f6f7fb" />
-  <title>Timekeeper · Time Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="theme-color"
+    content="#f8fafc"
+  />
+
+  <title>Time Calculator</title>
+
   <style>
-    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172033;background:#f6f7fb;font-synthesis:none}
-    *{box-sizing:border-box}body{margin:0;min-height:100dvh}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #a5b4fc;outline-offset:3px}
-    .shell{width:min(100% - 32px,680px);margin:0 auto;padding:34px 0 64px}.topline{display:flex;align-items:center;gap:12px;margin-bottom:32px}.mark{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:#4f46e5;color:white;font-size:23px;font-weight:700}.brand{font-weight:800;letter-spacing:-.6px;font-size:21px}.muted{color:#70798c}.eyebrow{font-size:12px;text-transform:uppercase;font-weight:800;letter-spacing:1.2px;color:#7066d9;margin:0 0 8px}h1{font-size:clamp(27px,6vw,38px);letter-spacing:-1.3px;line-height:1.15;margin:0 0 9px}p{line-height:1.55}.intro{margin:0 0 25px;color:#70798c;font-size:14px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:26px 0 16px}.toolbar h2{font-size:17px;margin:0}.primary{border:0;border-radius:13px;background:#4f46e5;color:white;font-weight:700;padding:13px 18px;box-shadow:0 4px 12px #4f46e522}.primary:hover{background:#4338ca}.secondary{background:white;border:1px solid #e0e3ed;color:#4b5567;padding:11px 14px;border-radius:12px;font-weight:650}.secondary:hover{background:#f4f5fa}.card{background:white;border:1px solid #e8eaf1;border-radius:19px;box-shadow:0 7px 26px #19234a08}.history{display:grid;gap:12px}.history-item{display:flex;align-items:center;gap:10px;padding:16px}.history-link{display:flex;flex:1;min-width:0;align-items:center;justify-content:space-between;gap:12px;text-decoration:none;color:inherit}.history-title{font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.history-meta{font-size:12px;color:#82899a;margin-top:5px}.history-total{font-weight:800;color:#4f46e5;white-space:nowrap;font-size:16px}.delete{border:0;background:#f5f6fa;border-radius:10px;color:#9ca3b5;width:35px;height:35px;flex:none;font-size:20px}.delete:hover{background:#fee2e2;color:#dc2626}.empty{padding:42px 24px;text-align:center}.empty-icon{font-size:36px;margin-bottom:12px}.empty h2{font-size:19px;margin:0 0 6px}.empty p{font-size:14px;color:#7b8496;margin:0 0 20px}.back{display:inline-flex;align-items:center;gap:8px;border:0;background:transparent;padding:0;color:#5c6476;font-weight:700;margin:0 0 25px}.editor{padding:22px}.label{display:block;font-size:13px;font-weight:750;margin-bottom:9px}.title-input{width:100%;padding:14px 15px;border:1px solid #dfe3ed;border-radius:12px;outline:none;background:#fff;color:#172033}.title-input:focus,.time-row input:focus{border-color:#818cf8;box-shadow:0 0 0 3px #e0e7ff}.divider{height:1px;background:#eef0f5;margin:23px 0}.row-head,.time-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 36px;gap:10px;align-items:center}.row-head{color:#7c8495;font-size:12px;font-weight:750;margin-bottom:9px}.time-row{margin-bottom:10px}.time-row input{width:100%;min-width:0;border:1px solid #dfe3ed;border-radius:12px;padding:14px 12px;color:#172033;outline:none;background:#fff}.remove{width:36px;height:42px;border:0;border-radius:10px;background:#f5f6fa;color:#8992a4;font-size:21px}.remove:disabled{opacity:.3;cursor:default}.total-box{background:#eeedff;border:1px solid #e0ddff;border-radius:16px;padding:22px;margin-top:20px;display:flex;justify-content:space-between;align-items:center;gap:12px}.total-label{font-size:13px;font-weight:750;color:#65629b}.total-value{font-size:clamp(29px,7vw,42px);font-weight:850;color:#4338ca;letter-spacing:-1px;font-variant-numeric:tabular-nums}.editor-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:19px}.saved{font-size:12px;color:#7c8495}.hint{font-size:12px;color:#8a91a0;margin:14px 0 0}.hidden{display:none!important}@media(max-width:480px){.shell{width:min(100% - 24px,680px);padding-top:22px}.topline{margin-bottom:27px}.editor{padding:17px}.history-item{padding:13px}.history-total{font-size:14px}.primary{padding:12px 14px}.toolbar{align-items:center}.total-box{padding:18px}.editor-actions{flex-wrap:wrap}.time-row input{padding:13px 10px}}
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #eef2ff;
+
+      --background: #f8fafc;
+      --surface: #ffffff;
+
+      --text: #0f172a;
+      --text-muted: #64748b;
+
+      --border: #e2e8f0;
+      --danger: #ef4444;
+
+      --radius: 14px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+
+      background: var(--background);
+      color: var(--text);
+
+      min-height: 100vh;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 720px;
+
+      margin: 0 auto;
+      padding: 24px 16px 100px;
+    }
+
+    /* HEADER */
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.7px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    /* BUTTONS */
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 8px;
+
+      border: none;
+      border-radius: 10px;
+
+      padding: 12px 18px;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      transition: 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-outline {
+      background: white;
+      color: var(--text);
+
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background: #f1f5f9;
+    }
+
+    .btn-danger {
+      background: #fef2f2;
+      color: var(--danger);
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      color: var(--primary);
+
+      padding: 8px 0;
+      margin-bottom: 20px;
+    }
+
+    /* CARDS */
+
+    .card {
+      background: var(--surface);
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
+      padding: 20px;
+    }
+
+    /* HOME */
+
+    .calculation-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .calculation-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 16px;
+
+      background: white;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
+      padding: 18px;
+
+      transition: 0.2s;
+    }
+
+    .calculation-card:hover {
+      border-color: var(--primary);
+    }
+
+    .calculation-info {
+      flex: 1;
+      min-width: 0;
+      cursor: pointer;
+    }
+
+    .calculation-title {
+      font-size: 16px;
+      font-weight: 600;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .calculation-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+
+      margin-top: 6px;
+    }
+
+    .calculation-total {
+      font-size: 18px;
+      font-weight: 700;
+
+      color: var(--primary);
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+
+      color: var(--danger);
+      font-size: 20px;
+
+      padding: 8px;
+    }
+
+    /* EMPTY STATE */
+
+    .empty-state {
+      text-align: center;
+
+      padding: 60px 24px;
+
+      background: white;
+      border: 1px dashed var(--border);
+
+      border-radius: var(--radius);
+    }
+
+    .empty-icon {
+      font-size: 42px;
+      margin-bottom: 16px;
+    }
+
+    .empty-state h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+
+      margin-bottom: 20px;
+    }
+
+    /* INPUTS */
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+
+      font-size: 13px;
+      font-weight: 600;
+
+      margin-bottom: 8px;
+    }
+
+    .form-input {
+      width: 100%;
+
+      padding: 13px 14px;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      outline: none;
+
+      background: white;
+      color: var(--text);
+
+      font-size: 15px;
+    }
+
+    .form-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    /* CALCULATOR */
+
+    .calculator-header {
+      margin-bottom: 24px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .interval-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .interval-card {
+      background: white;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
+      padding: 16px;
+    }
+
+    .interval-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin-bottom: 14px;
+    }
+
+    .interval-number {
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .interval-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .action-btn {
+      background: none;
+      border: none;
+
+      color: var(--primary);
+
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .action-btn.danger {
+      color: var(--danger);
+    }
+
+    .interval-times {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+
+      align-items: center;
+      gap: 12px;
+    }
+
+    .time-box {
+      background: var(--background);
+
+      border-radius: 10px;
+      padding: 12px;
+
+      text-align: center;
+    }
+
+    .time-label {
+      display: block;
+
+      font-size: 11px;
+      color: var(--text-muted);
+
+      margin-bottom: 6px;
+    }
+
+    .time-value {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .time-arrow {
+      color: var(--text-muted);
+      font-size: 20px;
+    }
+
+    .interval-duration {
+      display: flex;
+      justify-content: space-between;
+
+      margin-top: 14px;
+      padding-top: 14px;
+
+      border-top: 1px solid var(--border);
+
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .interval-duration strong {
+      color: var(--primary);
+      font-size: 15px;
+    }
+
+    /* TOTAL */
+
+    .total-card {
+      margin-top: 24px;
+
+      background: var(--primary);
+      color: white;
+
+      border-radius: var(--radius);
+
+      padding: 24px;
+      text-align: center;
+    }
+
+    .total-label {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .total-value {
+      font-size: 42px;
+      font-weight: 800;
+
+      letter-spacing: -1px;
+      margin-top: 8px;
+    }
+
+    .total-caption {
+      font-size: 12px;
+      opacity: 0.8;
+
+      margin-top: 6px;
+    }
+
+    /* MODAL */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+
+      background: rgba(15, 23, 42, 0.55);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 16px;
+
+      z-index: 1000;
+    }
+
+    .modal-overlay.hidden {
+      display: none;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 420px;
+
+      background: white;
+
+      border-radius: 18px;
+
+      padding: 24px;
+
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin-bottom: 24px;
+    }
+
+    .modal-header h2 {
+      font-size: 20px;
+    }
+
+    .modal-close {
+      border: none;
+      background: none;
+
+      font-size: 26px;
+      color: var(--text-muted);
+    }
+
+    .time-input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      gap: 12px;
+    }
+
+    .duration-preview {
+      background: var(--primary-light);
+
+      border-radius: 10px;
+
+      padding: 16px;
+
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .duration-preview span {
+      display: block;
+
+      font-size: 12px;
+      color: var(--text-muted);
+
+      margin-bottom: 6px;
+    }
+
+    .duration-preview strong {
+      color: var(--primary);
+      font-size: 26px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .modal-actions .btn {
+      flex: 1;
+    }
+
+    /* UTILITIES */
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px 14px 100px;
+      }
+
+      .header h1 {
+        font-size: 21px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .calculation-card {
+        padding: 14px;
+      }
+
+      .calculation-total {
+        font-size: 16px;
+      }
+
+      .total-value {
+        font-size: 38px;
+      }
+
+      .modal {
+        padding: 20px;
+      }
+
+      .time-value {
+        font-size: 15px;
+      }
+
+      .btn {
+        padding: 12px 14px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        padding-top: 48px;
+      }
+    }
   </style>
-  <script src="./script.js" defer></script>
 </head>
+
 <body>
-  <main class="shell">
-    <header class="topline"><div class="mark">◷</div><div class="brand">timekeeper<span style="color:#4f46e5">.</span></div></header>
-    <section id="home" class="hidden" aria-label="Saved calculations">
-      <p class="eyebrow">Your workspace</p><h1>Time calculations</h1><p class="intro">All your calculations, saved automatically on this device.</p>
-      <div class="toolbar"><h2>Recent calculations</h2><button class="primary" id="new-home">+ Calculate</button></div>
-      <div id="history" class="history"></div>
-    </section>
-    <section id="detail" class="hidden" aria-label="Time calculator">
-      <button class="back" id="back">← All calculations</button>
-      <p class="eyebrow">Time calculator</p><h1>Add up your time</h1><p class="intro">Enter hours and minutes. A new row appears automatically.</p>
-      <div class="card editor">
-        <label class="label" for="title">Calculation title <span class="muted" style="font-weight:400">(optional)</span></label>
-        <input class="title-input" id="title" maxlength="120" placeholder="e.g. Weekly work hours" autocomplete="off" />
-        <div class="divider"></div>
-        <div class="row-head"><span>Hours (h)</span><span>Minutes (m)</span><span></span></div>
-        <div id="rows"></div>
-        <p class="hint">Minutes over 60 are converted into hours.</p>
-        <div class="total-box"><div class="total-label">Total time</div><output class="total-value" id="total" aria-live="polite">0:00</output></div>
-        <div class="editor-actions"><span class="saved" id="saved">Saved automatically</span><button class="secondary" id="clear">Clear entries</button></div>
+
+  <main id="app" class="container"></main>
+
+  <!-- TIME MODAL -->
+
+  <div id="timeModal" class="modal-overlay hidden">
+
+    <div
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+    >
+
+      <div class="modal-header">
+
+        <h2 id="modalTitle">Add Time</h2>
+
+        <button
+          class="modal-close"
+          id="closeModalBtn"
+          aria-label="Close modal"
+        >
+          &times;
+        </button>
+
       </div>
-    </section>
-  </main>
+
+      <form id="timeForm">
+
+        <div class="time-input-grid">
+
+          <div class="form-group">
+
+            <label class="form-label" for="startTime">
+              Start Time
+            </label>
+
+            <input
+              type="time"
+              id="startTime"
+              class="form-input"
+              required
+            />
+
+          </div>
+
+          <div class="form-group">
+
+            <label class="form-label" for="endTime">
+              End Time
+            </label>
+
+            <input
+              type="time"
+              id="endTime"
+              class="form-input"
+              required
+            />
+
+          </div>
+
+        </div>
+
+        <div class="duration-preview">
+
+          <span>Calculated Duration</span>
+
+          <strong id="durationPreview">00:00</strong>
+
+        </div>
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="btn btn-outline"
+            id="cancelModalBtn"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="saveTimeBtn"
+          >
+            Add Interval
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+  <script src="/script.js"></script>
+
 </body>
 </html>
